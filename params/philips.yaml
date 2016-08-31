@@ -1,0 +1,36 @@
+# The following parameters refers to the usb_cam node. Some of them are used by the image_proc to assemble the camera_info message (namely  the image_widht, image_height, camera_name)
+video_device:    /dev/video0
+camera_name:     philips
+image_width:     640
+image_height:    480
+framerate:       20 
+camera_frame_id: camera
+pixel_format:    mjpeg
+io_method:       mmap
+
+# The following parameters refers to image_proc node
+camera_matrix:
+  rows: 3
+  cols: 3
+  data: [486.571128580368450, 0, 316.590495613997350, 0, 486.190034622040460, 246.162773362198210, 0, 0, 1]
+distortion_model: plumb_bob
+distortion_coefficients:
+  rows: 1
+  cols: 5
+  data: [0.056364783138003,-0.078652632347403, -0.000173783977711, -0.000503489937871, 0]
+rectification_matrix:
+  rows: 3
+  cols: 3
+  data: [1, 0, 0, 0, 1, 0, 0, 0, 1]
+projection_matrix:
+  rows: 3
+  cols: 4
+  data: [486.571128580368450, 0, 316.590495613997350, 0, 0, 486.190034622040460, 246.162773362198210, 0, 0, 0, 1, 0]
+
+# The following parameters refers to image_proc/crop_decimate nodelet. It removes the black edge form the undistorted image
+x_offset:    5
+y_offset:    5
+width:       630
+height:      470
+
+
