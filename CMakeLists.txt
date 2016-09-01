@@ -4,6 +4,8 @@ project(labrom_sensors)
 ## Find catkin macros and libraries
 find_package(catkin REQUIRED COMPONENTS
   image_transport
+	cv_bridge
+	sensor_msgs
   usb_cam
 )
 
@@ -30,16 +32,9 @@ catkin_package()
 ###########
 
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
-
-#############
-## Install ##
-#############
-
-#############
-## Testing ##
-#############
-
-
+add_executable(image_demux_node nodes/image_demux.cpp)
+target_link_libraries(image_demux_node ${catkin_LIBRARIES})

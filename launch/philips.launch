@@ -1,14 +1,7 @@
 <launch>
-	<!-- Launches camera node (camera calibration parameters are loaded here) -->
+	<!-- Launches camera node (camera calibration parameters are loaded here) 
   <node name="camera" pkg="usb_cam" type="usb_cam_node" output="screen" >
 		<rosparam file="$(find labrom_sensors)/params/philips.yaml" />	
 		<param name="camera_info_url" value="file://$(find labrom_sensors)/params/philips.yaml" />
-  </node>
-
-	<!-- image_proc node. It publishes undistorted (rectified) image -->
-	<node name="rectifier" pkg="image_proc" type="image_proc" ns="camera" />
-       
-  <node name="image_visualizer" pkg="rqt_image_view" type="rqt_image_view" output="screen" />
-
-    
+  </node>-->
 </launch>
