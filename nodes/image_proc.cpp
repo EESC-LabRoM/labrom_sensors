@@ -24,19 +24,20 @@ namespace camera{
 /**
 * Constructor
 */
-ImageProc::ImageProc(void): nh_("~"){
+ImageProc::ImageProc(void): pnh_("~"){
   // parameters
   std::string encoding;
-  nh_.getParam("encoding",encoding);
+  pnh_.getParam("encoding",encoding);
 
   // Setting parameters
   SetEncoding(encoding);
 
   // Initialize transport
-  image_transport::ImageTransport it(node_);
+  image_transport::ImageTransport it(nh_);
+  image_transport::ImageTransport pit(pnh_);  
   // Publishers and subscribers
   image_sub_ = it.subscribe("image_raw",1,&ImageProc::ImageCallback, this);
-  image_pub_  = it.advertise("image_mono",1);  
+  image_pub_  = pit.advertise("image_mono",1);  
 }
 
 /**

@@ -41,8 +41,8 @@ class ImageProc{
     //! Set encoding 
     void SetEncoding(std::string encoding);
   private:
-    ros::NodeHandle nh_;                       //!< ROS node handle (private)
-    ros::NodeHandle node_;                     //!< ROS node handle
+    ros::NodeHandle pnh_;                      //!< ROS node handle (private)
+    ros::NodeHandle nh_;                       //!< ROS node handle
 
     image_transport::Subscriber image_sub_;    //!< Input image subscriber
     image_transport::Publisher  image_pub_;    //!< Input image subscriber
