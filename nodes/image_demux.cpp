@@ -1,5 +1,5 @@
 /*************************************************************************
-*   Image demux. Implementation 
+*   Image demux implementation
 *   This file is part of labrom_sensors
 *
 *   labrom_sensors is free software: you can redistribute it and/or modify
@@ -25,7 +25,10 @@ namespace labrom_sensors{
 */
 ImageDemux::ImageDemux(void): nh_("~"){
   // parameters
-  nh_.param<std::string>("encoding",_encoding,"rgb8");
+  std::string encoding;
+  nh_.getParam("encoding",encoding);
+  SetEncoding(encoding);
+
   // Initialize transport
   image_transport::ImageTransport it(node_);
   // Publishers and subscribers
@@ -49,10 +52,18 @@ void ImageDemux::ImageCallback(const sensor_msgs::Image::ConstPtr &msg){
     img = cvImagePtr->image;
     // 2: Converting to grayscale
     cv::Mat gray;
-    if(_encoding != "mono8")
-      cv::cvtColor( img, gray, CV_RGB2GRAY);
-    else
-      gray = img;
+
+    switch(encoding_){
+      case (IMAGE_MONO_8):
+        gray = img;
+        break;
+      case (IMAGE_RGB_8):
+        cv::cvtColor( img, gray, CV_RGB2GRAY);
+        break;
+      default:
+        ROS_WARN("Unknown encoding"); 
+    }
+
       
     // 3: Publish image
     sensor_msgs::ImagePtr opt_flow_image  = cv_bridge::CvImage(msg->header, "mono8", gray ).toImageMsg();
@@ -61,8 +72,23 @@ void ImageDemux::ImageCallback(const sensor_msgs::Image::ConstPtr &msg){
   }catch (cv_bridge::Exception &e){
     ROS_ERROR("CV_BRIDGE Exception: %s", e.what());
   }     
-  
+
 }
+
+/**
+* Sets image encoding.
+* @param[in] encoding string that contains image encoding
+*/
+void ImageDemux::SetEncoding(std::string encoding){
+  if(encoding == "mono8"){
+    encoding_ = IMAGE_MONO_8;
+  } else if(encoding == "rgb8"){
+    encoding_ = IMAGE_RGB_8;
+  } else{
+    encoding_ = IMAGE_UNKNOWN_ENCODING;
+  }
+}
+
 }
 
 int main(int argc, char** argv){

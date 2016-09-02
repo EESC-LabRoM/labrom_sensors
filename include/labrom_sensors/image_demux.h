@@ -26,6 +26,9 @@
 
 //! Top-level namespace
 namespace labrom_sensors{
+#define IMAGE_UNKNOWN_ENCODING -1
+#define IMAGE_MONO_8 0
+#define IMAGE_RGB_8  1
 class ImageDemux{
   public:
     //! Constructor
@@ -34,7 +37,8 @@ class ImageDemux{
     ~ImageDemux(void);
     //! Subscriber
     void ImageCallback(const sensor_msgs::Image::ConstPtr &msg);
-
+    //! Set encoding 
+    void SetEncoding(std::string encoding);
   private:
     ros::NodeHandle nh_;                       //!< ROS node handle (private)
     ros::NodeHandle node_;                     //!< ROS node handle
@@ -42,6 +46,6 @@ class ImageDemux{
     image_transport::Subscriber image_sub_;    //!< Input image subscriber
     image_transport::Publisher  image_pub_;    //!< Input image subscriber
 
-    std::string _encoding;
+    int encoding_;                             //!< Image encoding
 };
 }
