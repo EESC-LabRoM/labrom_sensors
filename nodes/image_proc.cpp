@@ -1,5 +1,5 @@
 /*************************************************************************
-*   Image demux implementation
+*   Image pre processing implementation
 *   This file is part of labrom_sensors
 *
 *   labrom_sensors is free software: you can redistribute it and/or modify
