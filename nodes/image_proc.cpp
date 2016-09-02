@@ -65,7 +65,8 @@ void ImageProc::ImageCallback(const sensor_msgs::Image::ConstPtr &msg){
         cv::cvtColor( img, gray, CV_RGB2GRAY);
         break;
       default:
-        ROS_WARN("Unknown encoding"); 
+        ROS_ERROR("Unknown encoding");
+        return; 
     }
 
       
