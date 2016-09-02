@@ -22,5 +22,5 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-add_executable(image_demux_node nodes/image_demux.cpp)
-target_link_libraries(image_demux_node ${catkin_LIBRARIES})
+add_executable(image_proc_node nodes/image_proc.cpp)
+target_link_libraries(image_proc_node ${catkin_LIBRARIES})

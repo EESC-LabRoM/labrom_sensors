@@ -17,13 +17,14 @@
 ***************************************************************************/
 
 // labrom_sensors libraries
-#include "labrom_sensors/image_demux.h"
+#include "labrom_sensors/image_proc.h"
 
 namespace labrom_sensors{
+namespace camera{
 /**
 * Constructor
 */
-ImageDemux::ImageDemux(void): nh_("~"){
+ImageProc::ImageProc(void): nh_("~"){
   // parameters
   std::string encoding;
   nh_.getParam("encoding",encoding);
@@ -34,19 +35,19 @@ ImageDemux::ImageDemux(void): nh_("~"){
   // Initialize transport
   image_transport::ImageTransport it(node_);
   // Publishers and subscribers
-  image_sub_ = it.subscribe("image_raw",1,&ImageDemux::ImageCallback, this);
+  image_sub_ = it.subscribe("image_raw",1,&ImageProc::ImageCallback, this);
   image_pub_  = it.advertise("image_mono",1);  
 }
 
 /**
 * Destructor
 */ 
-ImageDemux::~ImageDemux(void){};
+ImageProc::~ImageProc(void){};
 
 /**
 * Image callback. Do some pre-processment if required: rgb to grayscale
 */
-void ImageDemux::ImageCallback(const sensor_msgs::Image::ConstPtr &msg){
+void ImageProc::ImageCallback(const sensor_msgs::Image::ConstPtr &msg){
   try{
     // 1: Converting image from ROS to OpenCV format   
     cv::Mat img;
@@ -81,7 +82,7 @@ void ImageDemux::ImageCallback(const sensor_msgs::Image::ConstPtr &msg){
 * Sets image encoding.
 * @param[in] encoding string that contains image encoding
 */
-void ImageDemux::SetEncoding(std::string encoding){
+void ImageProc::SetEncoding(std::string encoding){
   if(encoding == "mono8"){
     encoding_ = IMAGE_MONO_8;
   } else if(encoding == "rgb8"){
@@ -91,12 +92,13 @@ void ImageDemux::SetEncoding(std::string encoding){
   }
 }
 
-}
+} // camera namespace
+} // labrom_sensors namespace
 
 int main(int argc, char** argv){
   ros::init(argc,argv,"image_demux");
   
-  labrom_sensors::ImageDemux demux;
+  labrom_sensors::camera::ImageProc proc;
 
   ros::spin();
 

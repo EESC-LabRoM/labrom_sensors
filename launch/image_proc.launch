@@ -1,5 +1,5 @@
 <launch>
-  <node name="demux" pkg="labrom_sensors" type="image_demux_node" ns="camera">
+  <node name="image_proc" pkg="labrom_sensors" type="image_proc_node" ns="camera">
     <param name="image_transport" value="compressed"/>
     <param name="encoding" value="rgb8"/>
   </node>

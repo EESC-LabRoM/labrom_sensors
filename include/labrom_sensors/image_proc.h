@@ -1,5 +1,5 @@
 /*************************************************************************
-*   Image demux. It can subscribe an image topic from a remote vehicle 
+*   Image pre processing.
 *   This file is part of labrom_sensors
 *
 *   labrom_sensors is free software: you can redistribute it and/or modify
@@ -26,15 +26,16 @@
 
 //! Top-level namespace
 namespace labrom_sensors{
+namespace camera{
 #define IMAGE_UNKNOWN_ENCODING -1
 #define IMAGE_MONO_8 0
 #define IMAGE_RGB_8  1
-class ImageDemux{
+class ImageProc{
   public:
     //! Constructor
-    ImageDemux(void);
+    ImageProc(void);
     //! Destructor
-    ~ImageDemux(void);
+    ~ImageProc(void);
     //! Subscriber
     void ImageCallback(const sensor_msgs::Image::ConstPtr &msg);
     //! Set encoding 
@@ -48,4 +49,5 @@ class ImageDemux{
 
     int encoding_;                             //!< Image encoding
 };
-}
+} // camera namespace
+} // labrom_sensors namespace
