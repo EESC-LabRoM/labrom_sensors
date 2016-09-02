@@ -27,6 +27,8 @@ ImageDemux::ImageDemux(void): nh_("~"){
   // parameters
   std::string encoding;
   nh_.getParam("encoding",encoding);
+
+  // Setting parameters
   SetEncoding(encoding);
 
   // Initialize transport
@@ -66,8 +68,8 @@ void ImageDemux::ImageCallback(const sensor_msgs::Image::ConstPtr &msg){
 
       
     // 3: Publish image
-    sensor_msgs::ImagePtr opt_flow_image  = cv_bridge::CvImage(msg->header, "mono8", gray ).toImageMsg();
-    image_pub_.publish(opt_flow_image);
+    sensor_msgs::ImagePtr image_msg  = cv_bridge::CvImage(msg->header, "mono8", gray ).toImageMsg();
+    image_pub_.publish(image_msg);
 
   }catch (cv_bridge::Exception &e){
     ROS_ERROR("CV_BRIDGE Exception: %s", e.what());
