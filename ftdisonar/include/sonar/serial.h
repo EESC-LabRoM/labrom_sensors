@@ -9,9 +9,11 @@ int openSerial(char *portName)
   if (!fd)
   {
     return -1;
+    ROS_ERROR("Error trying to open serial port, verify permission");
   }
   else
   {
+    ROS_INFO("Serial port ok!");
   }
   return fd;
 }
@@ -29,22 +31,8 @@ void confSerial(int fd)
 
 void readSerial(int fd, std::stringstream &ss)
 {
-  int end_count = 0, result;
+  int result;
   unsigned char data;
-  while (end_count < 2)
-  {
-    result = read(fd, &data, 1);
-    if (result > 0)
-    {
-      if (data == ']')
-      {
-        end_count++;
-      }
-      ss << data;
-    }
-    else
-    {
-      break;
-    }
-  }
+  result = read(fd, &data, 1);
+  ss << data;
 }
