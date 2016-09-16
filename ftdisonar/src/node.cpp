@@ -15,14 +15,14 @@
 volatile int STOP = FALSE;
 void signal_handler_IO(int status);
 int wait_flag = TRUE;
-char devicename[80] = "/dev/ttyUSB0", ch;
 int status;
 //
 int main(int argc, char *argv[])
 {
+  char devicename[80] = "/dev/ttyUSB0", ch;
   ros::init(argc, argv, "sonar");
   ros::NodeHandle n;
-  ros::Publisher pub = n.advertise<std_msgs::Float64>("sonar_distance", 1);
+  ros::Publisher pub = n.advertise<std_msgs::Float64>("distance", 1);
   char readSonar[5];
   int inches, index = 0;
   std_msgs::Float64 distance;
