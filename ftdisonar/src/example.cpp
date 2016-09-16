@@ -1,3 +1,6 @@
+#include "ros/ros.h"
+#include "std_msgs/Float64.h"
+
 #include <termios.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -17,6 +20,13 @@ int status;
 //
 int main(int argc, char *argv[])
 {
+  ros::init(argc, argv, "sonar");
+  ros::NodeHandle n;
+  ros::Publisher pub = n.advertise<std_msgs::Float64>("sonar_distance", 1);
+  char readSonar[5];
+  int inches, index = 0;
+  std_msgs::Float64 distance;
+
   int fd, res, i;
   struct termios newtio;
   struct sigaction saio;
@@ -54,7 +64,7 @@ int main(int argc, char *argv[])
   tcsetattr(fd, TCSANOW, &newtio);
   //
   // loop while waiting for input. normally we would do something useful here
-  while (STOP == FALSE)
+  while (ros::ok())
   {
     //
     // read characters typed by user in non-blocking way
@@ -70,11 +80,20 @@ int main(int argc, char *argv[])
       {
         for (i = 0; i < res; i++) //for all chars in string
         {
-          printf("%c", buf[i]);
+          if (buf[i] == 'R')
+          {
+            inches = atoi(&readSonar[1]);
+            distance.data = inches * 0.0254;
+            pub.publish(distance);
+            index = 0;
+          }
+          readSonar[index] = buf[i];
+          index++;
         }
       }
       wait_flag = TRUE; /* wait for new input */
     }
+    ros::spinOnce();
   }
   close(fd);
 }
