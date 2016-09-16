@@ -39,6 +39,7 @@ int main(int argc, char **argv)
 
     // read serial
     readSerial(fd, stream);
+    ROS_INFO("reading: %s", stream.str().c_str());
     stream >> read;
 
     // treat

@@ -2,6 +2,7 @@
 #include <unistd.h>  // UNIX standard function definitions
 #include <fcntl.h>   // File control definitions
 #include <termios.h> // POSIX terminal control definitionss
+#include <iostream>
 
 int openSerial(char *portName)
 {
@@ -32,7 +33,7 @@ void confSerial(int fd)
 void readSerial(int fd, std::stringstream &ss)
 {
   int result;
-  unsigned char data;
-  result = read(fd, &data, 1);
+  unsigned char data[10];
+  result = read(fd, &data, 10);
   ss << data;
 }
