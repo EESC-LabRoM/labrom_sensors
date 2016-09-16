@@ -8,12 +8,10 @@ int openSerial(char *portName)
   int fd = open(portName, O_CREAT | O_RDWR | O_NOCTTY | O_NDELAY | O_NONBLOCK, S_IRUSR | S_IWUSR);
   if (!fd)
   {
-    ROS_INFO("erro");
     return -1;
   }
   else
   {
-    ROS_INFO("nao erro");
   }
   return fd;
 }

@@ -130,7 +130,6 @@ include_directories(
 
 ## Declare a C++ executable
 add_executable(sonar_node src/sonar_node.cpp)
-add_executable(node2 src/node2.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -138,7 +137,6 @@ add_executable(node2 src/node2.cpp)
 
 ## Specify libraries to link a library or executable target against
 target_link_libraries(sonar_node ${catkin_LIBRARIES})
-target_link_libraries(node2 ${catkin_LIBRARIES})
 
 
 #############
