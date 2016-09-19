@@ -26,20 +26,25 @@ int main(int argc, char *argv[])
   // Initialize ROS within 
   ros::init(argc, argv, "sonar");
   // Node Handle
-  ros::NodeHandle n;
+  ros::NodeHandle nh, pnh("~");
   // Publishers
-  ros::Publisher dist_pub = n.advertise<std_msgs::Float64>("distance", 1);
-  ros::Publisher pose_pub = n.advertise<geometry_msgs::PoseWithCovarianceStamped>("pose",1);
+  ros::Publisher dist_pub = nh.advertise<std_msgs::Float64>("distance", 1);
+  ros::Publisher pose_pub = nh.advertise<geometry_msgs::PoseWithCovarianceStamped>("pose",1);
 
   // ROS messages
   std_msgs::Float64 distance;
   geometry_msgs::PoseWithCovarianceStamped pose;
 
+  // Laoding parameters
+  std::string port;
+  pnh.param<std::string>("port",port,"USB0");
+
   // Initializing pose message
   pose.header.frame_id = "floor_sonar";
   pose.header.seq = 0;
-
-  char devicename[80] = "/dev/ttyUSB0", ch;
+  pose.pose.covariance[6*2+2] = 0.01; 
+  
+  char ch;
   char readSonar[5];
   int inches, index = 0;
 
@@ -49,10 +54,10 @@ int main(int argc, char *argv[])
   char buf[255];
   //
   //open the device in non-blocking way (read will return immediately)
-  fd = open(devicename, O_RDWR | O_NOCTTY | O_NONBLOCK);
+  fd = open(("/dev/tty"+port).c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
   if (fd < 0)
   {
-    perror(devicename);
+    perror(("/dev/tty"+port).c_str());
     exit(1);
   }
   //
@@ -106,6 +111,7 @@ int main(int argc, char *argv[])
             pose.pose.pose.position.z = distance.data;
             pose.header.seq += 1;
             pose.header.stamp = ros::Time::now();
+            
             // Publishing message
             dist_pub.publish(distance);
             pose_pub.publish(pose);

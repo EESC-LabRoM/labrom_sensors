@@ -1,6 +1,7 @@
 <launch>
 	<!-- Launches camera node (camera calibration parameters are loaded here) -->
   <node name="floor_sonar" pkg="sonar" type="sonar_node" output="screen">
-    <remap from="distance" to="distance"/>
+    <remap from="distance" to="sonar/distance"/>
+    <remap from="pose" to="sonar/pose"/>
   </node>
 </launch>
