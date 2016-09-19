@@ -1,9 +1,9 @@
 # The following parameters refers to the usb_cam node. Some of them are used by the image_proc to assemble the camera_info message (namely  the image_widht, image_height, camera_name)
 video_device:    /dev/video0
 camera_name:     philips
-image_width:     640
-image_height:    480
-framerate:       20 
+image_width:     320
+image_height:    240
+framerate:       30 
 camera_frame_id: camera
 pixel_format:    mjpeg
 io_method:       mmap

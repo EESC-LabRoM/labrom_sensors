@@ -1,10 +1,10 @@
 <launch>
   <node name="image_proc" pkg="labrom_sensors" type="image_proc_node">
-    <remap from="/image_raw" to="/image_raw"/>
-    <remap from="/image_mono" to="/image_mono"/>
+    <remap from="image_raw" to="camera/image_raw"/>
+    <remap from="image_mono" to="camera/image_mono"/>
     
     <param name="image_transport" value="compressed"/>
-    <param name="encoding" value="rgb8"/>
+    <param name="encoding" value="mono8"/>
   </node>
 </launch>
 

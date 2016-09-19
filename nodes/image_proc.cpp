@@ -34,10 +34,9 @@ ImageProc::ImageProc(void): pnh_("~"){
 
   // Initialize transport
   image_transport::ImageTransport it(nh_);
-  image_transport::ImageTransport pit(pnh_);  
   // Publishers and subscribers
-  image_sub_ = it.subscribe("image_raw",1,&ImageProc::ImageCallback, this);
-  image_pub_  = pit.advertise("image_mono",1);  
+  image_sub_ = it.subscribe("camera/image_raw",1,&ImageProc::ImageCallback, this);
+  image_pub_  = it.advertise("camera/image_mono",1);  
 }
 
 /**
