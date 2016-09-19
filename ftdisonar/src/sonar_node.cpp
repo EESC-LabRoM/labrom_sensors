@@ -36,11 +36,12 @@ int main(int argc, char *argv[])
   geometry_msgs::PoseWithCovarianceStamped pose;
 
   // Laoding parameters
-  std::string port;
+  std::string port, frame_id;
   pnh.param<std::string>("port",port,"USB0");
+  pnh.param<std::string>("frame_id",frame_id, "sonar");
 
   // Initializing pose message
-  pose.header.frame_id = "floor_sonar";
+  pose.header.frame_id = frame_id;
   pose.header.seq = 0;
   pose.pose.covariance[6*2+2] = 0.01; 
   
