@@ -1,6 +1,9 @@
+// ROS libraries
 #include "ros/ros.h"
+// ROS message libraries
 #include "std_msgs/Float64.h"
-
+#include "geometry_msgs/PoseWithCovarianceStamped.h"
+// Serial data reading
 #include <termios.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -8,6 +11,7 @@
 #include <stdlib.h>
 #include <sys/signal.h>
 #include <sys/types.h>
+// Serial port configuration
 #define BAUDRATE B9600
 #define FALSE 0
 #define TRUE 1
@@ -19,13 +23,25 @@ int status;
 //
 int main(int argc, char *argv[])
 {
-  char devicename[80] = "/dev/ttyUSB0", ch;
+  // Initialize ROS within 
   ros::init(argc, argv, "sonar");
+  // Node Handle
   ros::NodeHandle n;
-  ros::Publisher pub = n.advertise<std_msgs::Float64>("distance", 1);
+  // Publishers
+  ros::Publisher dist_pub = n.advertise<std_msgs::Float64>("distance", 1);
+  ros::Publisher pose_pub = n.advertise<geometry_msgs::PoseWithCovarianceStamped>("pose",1);
+
+  // ROS messages
+  std_msgs::Float64 distance;
+  geometry_msgs::PoseWithCovarianceStamped pose;
+
+  // Initializing pose message
+  pose.header.frame_id = "floor_sonar";
+  pose.header.seq = 0;
+
+  char devicename[80] = "/dev/ttyUSB0", ch;
   char readSonar[5];
   int inches, index = 0;
-  std_msgs::Float64 distance;
 
   int fd, res, i;
   struct termios newtio;
@@ -82,9 +98,18 @@ int main(int argc, char *argv[])
         {
           if (buf[i] == 'R')
           {
+            // Reading sonar
             inches = atoi(&readSonar[1]);
+            // Float message
             distance.data = inches * 0.0254;
-            pub.publish(distance);
+            // Pose message
+            pose.pose.pose.position.z = distance.data;
+            pose.header.seq += 1;
+            pose.header.stamp = ros::Time::now();
+            // Publishing message
+            dist_pub.publish(distance);
+            pose_pub.publish(pose);
+
             index = 0;
           }
           readSonar[index] = buf[i];
