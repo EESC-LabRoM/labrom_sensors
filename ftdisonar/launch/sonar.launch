@@ -3,5 +3,6 @@
   <node name="floor_sonar" pkg="sonar" type="sonar_node" output="screen">
     <remap from="distance" to="sonar/distance"/>
     <remap from="pose" to="sonar/pose"/>
+    <param name="port" value="USB0"/>
   </node>
 </launch>

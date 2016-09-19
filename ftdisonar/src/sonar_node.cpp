@@ -54,10 +54,11 @@ int main(int argc, char *argv[])
   char buf[255];
   //
   //open the device in non-blocking way (read will return immediately)
-  fd = open(("/dev/tty"+port).c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
+  port = "/dev/tty"+port;
+  fd = open(port.c_str(), O_RDWR | O_NOCTTY | O_NONBLOCK);
   if (fd < 0)
   {
-    perror(("/dev/tty"+port).c_str());
+    perror(port.c_str());
     exit(1);
   }
   //
