@@ -110,6 +110,7 @@ int main(int argc, char *argv[])
             // Reading sonar
             inches = atoi(&readSonar[1]);
             double new_measurement = inches * 0.0254;
+            
             if (new_measurement > 0.5 && new_measurement < 5){
               // Compute speed
               double dt = now - last_time;
@@ -126,9 +127,9 @@ int main(int argc, char *argv[])
               dist_pub.publish(distance);
               pose_pub.publish(pose);
 
-              index = 0;
               last_time = now;
             }
+            index = 0;
           }
           readSonar[index] = buf[i];
           index++;
