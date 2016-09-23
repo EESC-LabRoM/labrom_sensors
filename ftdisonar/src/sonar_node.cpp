@@ -111,10 +111,10 @@ int main(int argc, char *argv[])
             inches = atoi(&readSonar[1]);
             double new_measurement = inches * 0.0254;
             
-            if (new_measurement > 0.5 && new_measurement < 5){
+            if (new_measurement > 0.4 && new_measurement < 5){
               // Compute speed
               double dt = now - last_time;
-              double speed = (new_measurement - distance.data)/dt;
+              double speed = std::abs(new_measurement - distance.data)/dt;
               double alpha = tanh(1/speed), beta = 1- alpha;
               // Update using a dynamic low pass filter
               distance.data =  alpha*new_measurement + beta*distance.data;
