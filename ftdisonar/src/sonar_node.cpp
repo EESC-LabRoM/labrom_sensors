@@ -85,11 +85,13 @@ int main(int argc, char *argv[])
   newtio.c_cc[VTIME] = 0;
   tcflush(fd, TCIFLUSH);
   tcsetattr(fd, TCSANOW, &newtio);
-  //
+  // Variable to compute velocity
+  double last_time = ros::Time::now().toSec();
+  
   // loop while waiting for input. normally we would do something useful here
   while (ros::ok())
   {
-    //
+    double now = ros::Time::now().toSec();
     // read characters typed by user in non-blocking way
     ch = getchar_unlocked();
     if (ch > 0)
@@ -107,8 +109,13 @@ int main(int argc, char *argv[])
           {
             // Reading sonar
             inches = atoi(&readSonar[1]);
-            // Float message
-            distance.data = inches * 0.0254;
+            double new_measurement = inches * 0.0254;
+            // Compute speed
+            double dt = now - last_time;
+            double speed = (new_measurement - distance.data)/dt;
+            double alpha = tanh(1/speed), beta = 1- alpha;
+            // Update using a dynamic low pass filter
+            distance.data =  alpha*new_measurement + beta*distance.data;
             // Pose message
             pose.pose.pose.position.z = distance.data;
             pose.header.seq += 1;
@@ -119,6 +126,7 @@ int main(int argc, char *argv[])
             pose_pub.publish(pose);
 
             index = 0;
+            last_time = now;
           }
           readSonar[index] = buf[i];
           index++;
