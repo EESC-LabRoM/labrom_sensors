@@ -110,23 +110,25 @@ int main(int argc, char *argv[])
             // Reading sonar
             inches = atoi(&readSonar[1]);
             double new_measurement = inches * 0.0254;
-            // Compute speed
-            double dt = now - last_time;
-            double speed = (new_measurement - distance.data)/dt;
-            double alpha = tanh(1/speed), beta = 1- alpha;
-            // Update using a dynamic low pass filter
-            distance.data =  alpha*new_measurement + beta*distance.data;
-            // Pose message
-            pose.pose.pose.position.z = distance.data;
-            pose.header.seq += 1;
-            pose.header.stamp = ros::Time::now();
-            
-            // Publishing message
-            dist_pub.publish(distance);
-            pose_pub.publish(pose);
+            if (new_measurement > 0.5 && new_measurement < 5){
+              // Compute speed
+              double dt = now - last_time;
+              double speed = (new_measurement - distance.data)/dt;
+              double alpha = tanh(1/speed), beta = 1- alpha;
+              // Update using a dynamic low pass filter
+              distance.data =  alpha*new_measurement + beta*distance.data;
+              // Pose message
+              pose.pose.pose.position.z = distance.data;
+              pose.header.seq += 1;
+              pose.header.stamp = ros::Time::now();
+              
+              // Publishing message
+              dist_pub.publish(distance);
+              pose_pub.publish(pose);
 
-            index = 0;
-            last_time = now;
+              index = 0;
+              last_time = now;
+            }
           }
           readSonar[index] = buf[i];
           index++;
