@@ -37,13 +37,15 @@ int main(int argc, char *argv[])
 
   // Laoding parameters
   std::string port, frame_id;
+  double covariance;
   pnh.param<std::string>("port",port,"USB0");
   pnh.param<std::string>("frame_id",frame_id, "sonar");
+  pnh.param<double>("covariance",covariance, 0.01);
 
   // Initializing pose message
   pose.header.frame_id = frame_id;
   pose.header.seq = 0;
-  pose.pose.covariance[6*2+2] = 0.01; 
+  pose.pose.covariance[6*2+2] = covariance; 
   
   char ch;
   char readSonar[5];
