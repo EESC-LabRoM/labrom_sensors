@@ -26,9 +26,3 @@ projection_matrix:
   rows: 3
   cols: 4
   data: [243.2855642, 0, 158.29524780, 0, 0, 243.095017311, 123.081386681, 0, 0, 0, 1, 0]
-
-# The following parameters refers to image_proc/crop_decimate nodelet. It removes the black edge form the undistorted image
-x_offset:    5
-y_offset:    5
-width:       630
-height:      470
