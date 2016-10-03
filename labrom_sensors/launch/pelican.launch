@@ -15,7 +15,7 @@
     <remap from="distance" to="sonar/distance"/>
     <remap from="pose" to="sonar/pose"/>
     <!-- parameters -->
-    <param name="port" value="USB0"/>
+    <param name="port" value="USB2"/>
   </node>
 
 </launch>
